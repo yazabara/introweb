@@ -1,5 +1,6 @@
-package com.zabara.introweb.actions;
+package com.zabara.introweb.actions.specific;
 
+import com.zabara.introweb.actions.Action;
 import com.zabara.introweb.views.View;
 
 /**

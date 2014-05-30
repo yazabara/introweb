@@ -1,5 +1,7 @@
 package com.zabara.introweb.actions;
 
+import com.zabara.introweb.actions.specific.HomeAction;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
@@ -10,7 +12,7 @@ import java.util.logging.Logger;
 public class ActionFactory {
 
 	private static ActionFactory instance = null;
-	private Logger logger = Logger.getLogger(ActionFactory.class.getName());
+	private static final Logger logger = Logger.getLogger(ActionFactory.class.getName());
 	private static Map<String,Action> actions;
 
 	static {
@@ -24,7 +26,7 @@ public class ActionFactory {
 
 	private void fillActions() {
 		actions = new HashMap<String, Action>();
-		actions.put("home", new HomeAction());
+		actions.put("GET/home", new HomeAction());
 	}
 
 	public static ActionFactory getInstance() {

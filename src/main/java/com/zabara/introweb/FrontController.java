@@ -18,7 +18,7 @@ import java.util.logging.Logger;
  */
 public class FrontController extends HttpServlet {
 
-	private Logger logger = Logger.getLogger(FrontController.class.getName());
+	private static final Logger logger = Logger.getLogger(FrontController.class.getName());
 
 	@Override
 	public void init() throws ServletException {
@@ -39,6 +39,6 @@ public class FrontController extends HttpServlet {
 	}
 
 	protected Action getAction(HttpServletRequest request) throws ActionException {
-		return ActionFactory.getAction("home" /*request.getMethod() + request.getPathInfo()*/);
+		return ActionFactory.getAction(request.getMethod() + request.getServletPath());
 	}
 }

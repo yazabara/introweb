@@ -16,7 +16,7 @@ public class View {
 
 	private HttpServletRequest request;
 	private HttpServletResponse response;
-	private Logger logger = Logger.getLogger(View.class.getName());
+	private static final Logger logger = Logger.getLogger(View.class.getName());
 
 	public View(HttpServletRequest request, HttpServletResponse response){
 		this.request = request;
@@ -24,7 +24,7 @@ public class View {
 	}
 
 	public void navigate() throws ServletException, IOException {
-		String path = "/WEB-INF/pages" + request.getServletPath() + ".jsp";
+		String path = "/WEB-INF/pages/" + request.getMethod() + request.getServletPath() + ".jsp";
 		request.getRequestDispatcher(path).forward(request, response);
 		logger.info("view navigate to [" + path + "]");
 	}
