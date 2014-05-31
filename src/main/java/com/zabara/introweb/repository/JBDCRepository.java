@@ -11,7 +11,7 @@ import java.sql.Statement;
 /**
  * Created by Yaroslav_Zabara on 5/30/2014.
  */
-public class AbstractRepository {
+public class JBDCRepository {
 
 	//default values
 	private String url = "jdbc:h2:file:C:/h2/data/introweb";
@@ -19,7 +19,7 @@ public class AbstractRepository {
 	private String password = "";
 	private String driverName = "org.h2.Driver";
 
-	public AbstractRepository() throws ClassNotFoundException {
+	public JBDCRepository() throws ClassNotFoundException {
 		//Загружаем драйвер
 		Class.forName(driverName);
 	}

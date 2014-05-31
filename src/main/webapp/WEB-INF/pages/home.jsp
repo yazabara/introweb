@@ -12,5 +12,6 @@
 </head>
 <body>
 	<%= request.getAttribute("name")%>
+    ${name}
 </body>
 </html>

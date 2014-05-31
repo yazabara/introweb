@@ -1,6 +1,7 @@
 package com.zabara.introweb.actions;
 
 import com.zabara.introweb.actions.specific.HomeAction;
+import com.zabara.introweb.actions.specific.QuestionsAction;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -26,7 +27,8 @@ public class ActionFactory {
 
 	private void fillActions() {
 		actions = new HashMap<String, Action>();
-		actions.put("GET/home", new HomeAction());
+		actions.put("/home", new HomeAction());
+		actions.put("/questions", new QuestionsAction());
 	}
 
 	public static ActionFactory getInstance() {

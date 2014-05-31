@@ -1,5 +1,6 @@
 package com.zabara.introweb.repository;
 
+import com.zabara.introweb.domain.Contact;
 import com.zabara.introweb.domain.Task;
 
 import java.util.List;
@@ -9,5 +10,11 @@ import java.util.List;
  */
 public interface TaskRepository {
 
-	List<Task> getTasks();
+    List<Task> getTasks();
+
+    boolean addTask(Task task);
+
+    Task getTaskById(long id);
+
+    List<Task> getTasksByOwner(Contact owner);
 }
