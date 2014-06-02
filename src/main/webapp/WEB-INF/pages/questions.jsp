@@ -7,7 +7,7 @@
 <html>
 <head>
     <title>Questions</title>
-	<%@include file="headSection.jsp" %>
+	<%@include file="blocks/headSection.jsp" %>
 </head>
 <body>
 	<div id='tab1' class="tab_content" style="width: 100%">
