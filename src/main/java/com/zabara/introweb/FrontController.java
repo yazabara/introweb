@@ -39,6 +39,6 @@ public class FrontController extends HttpServlet {
 	}
 
 	protected Action getAction(HttpServletRequest request) throws ActionException {
-		return ActionFactory.getAction(request.getServletPath());
+		return ActionFactory.getAction(request.getPathInfo());
 	}
 }

@@ -24,7 +24,7 @@ public class View {
 	}
 
 	public void navigate() throws ServletException, IOException {
-		String path = "/WEB-INF/pages/" + request.getServletPath() + ".jsp";
+		String path = "/WEB-INF/pages/" + request.getPathInfo() + ".jsp";
 		request.getRequestDispatcher(path).forward(request, response);
 		logger.info("view navigate to [" + path + "]");
 	}
