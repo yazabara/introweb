@@ -17,6 +17,13 @@ public class Contact implements Serializable{
         this.password = password;
     }
 
+	public boolean isCorrect() {
+		if (firstName == null || password == null || firstName.isEmpty() || password.isEmpty()) {
+			return false;
+		}
+		return true;
+	}
+
     public String getFirstName() {
         return firstName;
     }

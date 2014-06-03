@@ -1,6 +1,7 @@
 package com.zabara.introweb.actions.specific;
 
 import com.google.common.collect.ImmutableList;
+import com.zabara.introweb.Utils;
 import com.zabara.introweb.actions.Action;
 import com.zabara.introweb.actions.ActionException;
 import com.zabara.introweb.domain.Contact;
@@ -26,6 +27,8 @@ public class AddTask implements Action {
 
     @Override
     public void execute(View view) {
+		task = new Task();
+		errors.clear();
 		if ("GET".equals(view.getRequest().getMethod())){
 			return;
 		}
@@ -37,7 +40,7 @@ public class AddTask implements Action {
 		}
 
 		if (taskId > -1) {
-			editTask();
+			editTask(view);
 		} else {
 			addNewTask(view);
 		}
@@ -45,11 +48,45 @@ public class AddTask implements Action {
 
     }
 
-	private void editTask() {
-		logger.log(Level.SEVERE, "task was eddited");
+	private void editTask(View view) {
+		fillTask(view);
+		task.setId(Long.parseLong(view.getRequest().getParameter("id")));
+		try{
+			if (errors.size() > 0 || !task.isCorrectTask()) {
+				view.getRequest().setAttribute("errors", errors);
+			} else {
+				view.getRequest().setAttribute("success", ImmutableList.of("Task was added"));
+				view.getRequest().setAttribute("task", task);
+				if(!TaskRepositoryImpl.getInstance().editTask(task)){
+					view.getRequest().setAttribute("errors", ImmutableList.of("Task wasn't added"));
+				}
+			}
+		} catch (Exception ex) {
+			logger.log(Level.SEVERE, ex.getMessage());
+		}
 	}
 
 	private void addNewTask(View view) {
+
+		//TODO сделать норм ид
+		task.setId((long) Utils.randInt(0, 100000));
+		fillTask(view);
+		try{
+			if (errors.size() > 0 || !task.isCorrectTask()) {
+				view.getRequest().setAttribute("errors", errors);
+			} else {
+				view.getRequest().setAttribute("success", ImmutableList.of("Task was added"));
+				view.getRequest().setAttribute("task", task);
+				if(!TaskRepositoryImpl.getInstance().addTask(task)){
+					view.getRequest().setAttribute("errors", ImmutableList.of("Task wasn't added"));
+				}
+			}
+		} catch (Exception ex) {
+			logger.log(Level.SEVERE, ex.getMessage());
+		}
+	}
+
+	private void fillTask(View view) {
 		int variantsSize = 0;
 		String question = "";
 		int answerNumber = -1;
@@ -83,26 +120,10 @@ public class AddTask implements Action {
 			logger.log(Level.SEVERE, ex.getMessage());
 		}
 
-//        TODO сделать норм ид
-		task.setId(new Random(new Date().getTime()).nextLong());
 		task.setQuestion(question);
 		task.setAnswerIndex(answerNumber);
 		task.setVariants(variants);
 		//TODO сделать проверку на создателя
 		task.setOwner(new Contact("Slava","123"));
-
-		try{
-			if (errors.size() > 0 || !task.isCorrectTask()) {
-				view.getRequest().setAttribute("errors", errors);
-			} else {
-				view.getRequest().setAttribute("success", ImmutableList.of("Task was added"));
-				view.getRequest().setAttribute("task", task);
-				if(TaskRepositoryImpl.getInstance().addTask(task)){
-					view.getRequest().setAttribute("errors", ImmutableList.of("Task wasn't added"));
-				}
-			}
-		} catch (Exception ex) {
-			logger.log(Level.SEVERE, ex.getMessage());
-		}
 	}
 }

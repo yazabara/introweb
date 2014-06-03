@@ -14,6 +14,15 @@ public interface TaskRepository {
 
     boolean addTask(Task task);
 
+	/**
+	 * изменение таска - по id.
+	 * Остальные поля проверяются на пустоту - если не пустые - меняются.
+	 *
+	 * @param task
+	 * @return удалось ли изменить
+	 */
+	boolean editTask(Task task);
+
     Task getTaskById(long id);
 
     List<Task> getTasksByOwner(Contact owner);
