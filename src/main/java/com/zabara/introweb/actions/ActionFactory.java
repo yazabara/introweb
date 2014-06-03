@@ -1,5 +1,6 @@
 package com.zabara.introweb.actions;
 
+import com.zabara.introweb.actions.specific.AddTask;
 import com.zabara.introweb.actions.specific.HomeAction;
 import com.zabara.introweb.actions.specific.QuestionsAction;
 
@@ -29,6 +30,7 @@ public class ActionFactory {
 		actions = new HashMap<String, Action>();
 		actions.put("/home", new HomeAction());
 		actions.put("/questions", new QuestionsAction());
+		actions.put("/addTask", new AddTask());
 	}
 
 	public static ActionFactory getInstance() {

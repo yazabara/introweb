@@ -2,6 +2,10 @@
     margin: 0 auto;
     max-height: 500px; }
 
+.content-wrapper {
+    margin-top: 60px;
+}
+
 .carousel-caption {
     background: rgba(0, 0, 0, 0.6);
     -webkit-border-radius: 10px;

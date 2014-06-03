@@ -27,7 +27,7 @@
 		<h3>Table 2</h3>
 		<p>This is display:table </p>
 
-		<display:table export="true"  id="data" name="${questionList}" pagesize="3" sort="list" uid="two" requestURI="${pageContext.request.contextPath}/questions">
+		<display:table export="true"  id="data" name="${questionList}" pagesize="3" sort="list" uid="two" requestURI="questions">
 			<display:column property="question" title="question" sortable="true"   />
 			<display:column property="owner.firstName" title="Name" sortable="true"  />
 		</display:table>

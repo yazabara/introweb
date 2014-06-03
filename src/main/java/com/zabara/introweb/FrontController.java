@@ -5,6 +5,7 @@ import com.zabara.introweb.actions.ActionException;
 import com.zabara.introweb.actions.ActionFactory;
 import com.zabara.introweb.views.View;
 
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -34,7 +35,6 @@ public class FrontController extends HttpServlet {
 		} catch (ActionException ex) {
 			logger.log(Level.SEVERE, ex.getMessage());
 		}
-
 		view.navigate();
 	}
 
