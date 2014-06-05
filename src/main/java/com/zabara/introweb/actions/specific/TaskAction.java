@@ -6,30 +6,43 @@ import com.zabara.introweb.actions.Action;
 import com.zabara.introweb.actions.ActionException;
 import com.zabara.introweb.domain.Contact;
 import com.zabara.introweb.domain.Task;
+import com.zabara.introweb.repository.TaskRepository;
 import com.zabara.introweb.repository.TaskRepositoryImpl;
 import com.zabara.introweb.views.View;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
  * Created by Yaroslav on 02.06.2014.
  */
-public class AddTask implements Action {
+public class TaskAction implements Action {
 
-    private static final Logger logger = Logger.getLogger(AddTask.class.getName());
+    private static final Logger logger = Logger.getLogger(TaskAction.class.getName());
 	private Task task = new Task();
 	private  List<String> errors = new ArrayList<String>();
+	private TaskRepository taskRepository = TaskRepositoryImpl.getInstance();
 
     @Override
     public void execute(View view) {
 		task = new Task();
 		errors.clear();
 		if ("GET".equals(view.getRequest().getMethod())){
+			String id = view.getRequest().getParameter("id");
+			try {
+				Long longId = Long.parseLong(id);
+				Task task = taskRepository.getTaskById(longId);
+				if (task != null) {
+					view.getRequest().setAttribute("task", task);
+				} else {
+					errors.add("Can't find task with id = " + id);
+				}
+			} catch (Exception ex){
+				errors.add("Can't get task with id = " + id);
+				logger.log(Level.SEVERE, "Can't get task with id = " + id + " " + ex.getMessage());
+			}
 			return;
 		}
 		int taskId = -1;
@@ -55,10 +68,10 @@ public class AddTask implements Action {
 			if (errors.size() > 0 || !task.isCorrectTask()) {
 				view.getRequest().setAttribute("errors", errors);
 			} else {
-				view.getRequest().setAttribute("success", ImmutableList.of("Task was added"));
+				view.getRequest().setAttribute("success", ImmutableList.of("Task was changed"));
 				view.getRequest().setAttribute("task", task);
-				if(!TaskRepositoryImpl.getInstance().editTask(task)){
-					view.getRequest().setAttribute("errors", ImmutableList.of("Task wasn't added"));
+				if(!taskRepository.editTask(task)){
+					view.getRequest().setAttribute("errors", ImmutableList.of("Task wasn't changed"));
 				}
 			}
 		} catch (Exception ex) {
@@ -77,7 +90,7 @@ public class AddTask implements Action {
 			} else {
 				view.getRequest().setAttribute("success", ImmutableList.of("Task was added"));
 				view.getRequest().setAttribute("task", task);
-				if(!TaskRepositoryImpl.getInstance().addTask(task)){
+				if(!taskRepository.addTask(task)){
 					view.getRequest().setAttribute("errors", ImmutableList.of("Task wasn't added"));
 				}
 			}
@@ -91,12 +104,22 @@ public class AddTask implements Action {
 		String question = "";
 		int answerNumber = -1;
 		List<String> variants = new ArrayList<String>();
+		long id = -1;
 		try {
 			question = view.getRequest().getParameter("question");
+			if (question == null || question.isEmpty()) {
+				errors.add("question is empty");
+			}
 			variantsSize = Integer.parseInt(view.getRequest().getParameter("variantsSize"));
 		} catch (Exception ex) {
 			errors.add(ex.getMessage());
 			logger.log(Level.SEVERE, ex.getMessage());
+		}
+
+		try {
+			id = Long.parseLong(view.getRequest().getParameter("id"));
+		} catch (Exception ex) {
+			errors.add(ex.getMessage());
 		}
 
 		if (variantsSize > 0) {
@@ -114,15 +137,20 @@ public class AddTask implements Action {
 		}
 
 		try {
-			answerNumber = Integer.parseInt(view.getRequest().getParameter("rightAnswer"));
+			answerNumber = Integer.parseInt(view.getRequest().getParameter("options"+id));
+			if (answerNumber > variants.size() || answerNumber < 0 ) {
+				errors.add("Answer number is incorrect");
+			}
+			task.setAnswerIndex(answerNumber);
 		} catch (Exception ex) {
-			errors.add(ex.getMessage());
+			errors.add("Answer number is empty");
 			logger.log(Level.SEVERE, ex.getMessage());
 		}
 
 		task.setQuestion(question);
 		task.setAnswerIndex(answerNumber);
 		task.setVariants(variants);
+		task.setId(id);
 		//TODO сделать проверку на создателя
 		task.setOwner(new Contact("Slava","123"));
 	}

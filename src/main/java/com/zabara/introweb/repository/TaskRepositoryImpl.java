@@ -118,7 +118,7 @@ public class TaskRepositoryImpl implements TaskRepository {
 		Predicate<Task> filter = new Predicate<Task>() {
 			@Override
 			public boolean apply(Task task) {
-				return task.getOwner().getFirstName().equals(owner);
+				return task.getOwner().getFirstName().equals(owner.getFirstName());
 			}
 		};
 

@@ -10,27 +10,24 @@
 	<%@include file="blocks/headSection.jsp" %>
 </head>
 <body>
-	<div id='tab1' class="tab_content" style="width: 100%">
-		<h3>Table 2</h3>
-		<p>This is forEach </p>
-		<TABLE>
-			<c:forEach items="${questionList}" var="task">
-				<tr>
-					<td><c:out value="${task.question}"/></td>
-					<td><c:out value="${task.owner.firstName}"/></td>
-				</tr>
-			</c:forEach>
-		</TABLE>
-	</div>
 
-	<div id='tab2' class="tab_content" style="width: 100%">
-		<h3>Table 2</h3>
-		<p>This is display:table </p>
+<jsp:include page="blocks/header.jsp">
+	<jsp:param name="active" value="addTask"/>
+</jsp:include>
 
-		<display:table export="true"  id="data" name="${questionList}" pagesize="3" sort="list" uid="two" requestURI="questions">
+<div class="container content-wrapper">
+
+	<div id='tab2' class="panel panel-default" style="width: 100%">
+
+		<display:table export="true"  id="data" name="${questionList}" pagesize="3" sort="list" uid="two" requestURI="questions" class="table">
+			<display:column property="id" title="id" sortable="true" />
 			<display:column property="question" title="question" sortable="true"   />
-			<display:column property="owner.firstName" title="Name" sortable="true"  />
+			<display:column property="owner.firstName" title="Author" sortable="true"  />
 		</display:table>
 	</div>
+
+</div>
+
+<%@include file="blocks/footer.jsp" %>
 </body>
 </html>
